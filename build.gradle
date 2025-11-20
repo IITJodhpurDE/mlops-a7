@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.iitj.bigdata'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files('lib/bson-4.5.0.jar')
+    implementation files('lib/mongodb-driver-core-4.5.0.jar')
+    implementation files('lib/mongodb-driver-sync-4.5.0.jar')
+    implementation files('lib/gson-2.9.0.jar')
+}
+
+application {
+    mainClass = 'Assignment7'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('runAssignment', JavaExec) {
+    group = 'application'
+    description = 'Run the Assignment7 application'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = application.mainClass
+}
+
+// Ensure we run from the project root so relative data/ path works
+tasks.named('run', JavaExec).configure {
+    workingDir = project.rootDir
+}
